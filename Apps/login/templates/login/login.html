@@ -1,0 +1,115 @@
+{% extends 'login/base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{% block content %}
+<div class="login-box">
+    <div class="card fondo-image">
+        <a href="#" class="logo-fondo">
+            <img src="{{ dashboard.get_logo }}", width="50" height="50",
+                 class="brand-image img-circle">
+            {{ dashboard.name }}
+        </a>
+    </div>
+    <div class="card">
+        <div class="card-body login-card-body">
+            <p class="login-box-msg">{{ title }}</p>
+            <form action="." method="post">
+                <input type="hidden" name="action" value="{{ action }}">
+                <!-- {% csrf_token %} -->
+                <div class="input-group mb-3">
+                    {{ form.username|add_class:'form-control'|attr:'autocomplete:off'|attr:'placeholder:Ingrese su usuario' }}
+                    <div class="input-group-append">
+                        <!-- <div class="input-group-text">
+                            <span class="fas fa-envelope"></span>
+                        </div> -->
+                        <button class="btn btn-outline-secondary btn-static" type="button" tabindex="-1">
+                            <i class="fas fa-envelope"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    {{ form.password|add_class:'form-control'|attr:'autocomplete:off'|attr:'placeholder:Ingrese su contraseña' }}
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary btn-login" type="button" id="togglePassword" tabindex="-1">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <button type="submit" class="btn btn-primary btn-block btn-dark-blue">
+                            <i class="fas fa-sign-in-alt"></i> Iniciar sesión
+                        </button>
+                    </div>
+                </div>
+                <p class="text-center mt-2" style="font-size: 13px;">
+                    Si no recuerdas tu contraseña <i class="fa-solid fa-key"></i> puedes resetearla dando click <a href="{% url 'reset_password' %}">aquí.</a>
+                </p>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('togglePassword').addEventListener('click', function (e) {
+            const passwordInput = document.getElementById('id_password');
+            const icon = this.querySelector('i');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+
+        $('form').on('submit', function (e) {
+            e.preventDefault();
+            var parameters = new FormData(this);
+            var btnsubmit = $(this).find('[type="submit"]').first();
+            btnsubmit.prop('disabled', true);
+
+            $.ajax({
+                url: pathname,
+                type: 'POST',
+                data: parameters,
+                dataType: 'json',
+                processData: false,
+                contentType: false,
+                headers: {
+                    'X-CSRFToken': csrftoken 
+                },
+                beforeSend: function (){
+                    $.LoadingOverlay('show', {
+                        image       : '',
+                        fontawesome : 'fas fa-spinner fa-pulse',
+                        custom : $('<div>', {
+                            'class': 'loading',
+                            'text': 'Cargando...'
+                        })
+                    });
+                }
+            }).done(function (data) {
+                $.LoadingOverlay('hide');
+                if (!data.hasOwnProperty('error')) {
+                    alert_message({
+                        'msg': 'Credenciales correctas. Bienvenido.',
+                        'timer': 800,
+                        'redirect': '{{ menu_url }}'
+                    });
+                    return false;
+                }
+                dict_error['msg'] = data.error;
+                alert_message(dict_error);
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                $.LoadingOverlay('hide');
+                dict_error['msg'] = 'Error interno. ' + jqXHR.statusText + '.';
+                alert_message(dict_error);
+            }).always(function (data) {
+                btnsubmit.prop('disabled', false);
+            });
+        });
+    </script>
+</div>
+{% endblock %}

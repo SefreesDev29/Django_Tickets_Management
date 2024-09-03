@@ -1,0 +1,27 @@
+{% extends 'list.html' %}
+{% load static %}
+{% block head_list %}
+    <script src="{% static 'user/js/list.js' %}"></script>
+{% endblock %}
+
+{% block columns %}
+    <tr>
+        <th scope="col">Nro</th>
+        <th scope="col">Nombres</th>
+        <th scope="col">Usuario</th>
+        <th scope="col">Fech. Creación</th>
+        <th scope="col">Últ. Conexión</th>
+        <th scope="col">Estado</th>
+        <th scope="col">Imagen</th>
+        <th scope="col">Rol</th>
+        <th scope="col">Opciones</th>
+    </tr>
+{% endblock %}
+
+{% block rows %}
+
+{% endblock %}
+
+{% block javascript %}
+
+{% endblock %}

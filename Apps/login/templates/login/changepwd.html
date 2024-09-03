@@ -1,0 +1,74 @@
+{% extends 'login/base.html' %}
+{% load static %}
+{% block content %}
+<div class="login-box">
+    <div class="card fondo-image">
+        <a href="#" class="logo-fondo">
+            <img src="{{ dashboard.get_logo }}", width="50" height="50",
+                 class="brand-image img-circle">
+            {{ dashboard.name }}
+        </a>
+    </div>
+    <div class="card">
+        <div class="card-body login-card-body">
+            <p class="login-box-msg">{{ title }}</p>
+            <form action="." method="post">
+                <input type="hidden" name="next" value="{{ next }}">
+                {% csrf_token %}
+                <div class="input-group mb-3">
+                    {{ form.password }}
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    {{ form.confirmPassword }}
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <button type="submit" class="btn btn-primary btn-block btn-dark-blue">
+                            <i class="fas fa-lock"></i> Cambiar contraseña
+                        </button>
+                    </div>
+                </div>
+                <p class="text-center mt-2" style="font-size: 13px;">
+                    Si deseas volver al login <i class="fa-solid fa-house"></i> da un click <a href="{% url 'login' %}">aquí.</a>
+                </p>
+            </form>
+        </div>
+    </div>
+    <script type="application/javascript">
+        $(function () {
+            $('form').on('submit', function (e) {
+                e.preventDefault();
+                var parameters = new FormData(this);
+                var btnsubmit = $(this).find('[type="submit"]').first();
+                btnsubmit.prop('disabled', true);
+                args = {
+                    'url' : pathname,
+                    'content' : '¿Estás seguro de cambiar tu contraseña?',
+                    'parameters' : parameters,
+                    'btnsubmit' : btnsubmit,
+                    'success' : function (response) {
+                        alert_message({
+                            'title': 'Notificación!',
+                            'msg': 'Tu contraseña ha sido cambiada correctamente.',
+                            'timer': 3000,
+                            'redirect': '{{ login_url }}'
+                        });
+                    }
+                }
+                submit_with_ajax(args);
+            });
+        });
+    </script>
+</div>
+{% endblock %}

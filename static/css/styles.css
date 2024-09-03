@@ -1,0 +1,213 @@
+/* Login styles */
+
+.logo-fondo {
+    color: #ffffff ;
+    background-color: #0A4564 ;
+    padding: 10px;
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 30px;
+    font-family: "Helvetica Neue";
+}
+
+.logo-fondo:hover{
+    color: #ffffff !important;
+}
+
+.fondo-image {
+    text-align: center;
+}
+
+.btn-dark-blue {
+    background-color: #0A4564 !important;
+    border-color: #0A4564 !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important; 
+    transition: background-color 0.3s ease, transform 0.3s ease !important;
+    padding: 0.5rem 0.5rem !important;
+    font-size: 1rem !important;
+    font-weight: 550 !important; 
+    border: 1px solid transparent !important;
+    border-radius: 0.5rem !important; 
+}
+
+.btn-dark-blue:hover {
+    background: linear-gradient(to right, #0044cc, #3399ff) !important;
+    border-color: #ffffff !important;
+}
+
+
+/* Menú styles */
+
+
+.fuente{
+    color: #ffffff ;
+}
+
+.navbar-dark-blue{
+    background: #0A4564 ;
+}
+
+.navbar-dark-black{
+    background: #000000 ;
+}
+
+.nav-link--inside:hover{
+    background: linear-gradient(to right, #0044cc, #3399ff)!important;
+}
+
+.changecolor:hover {
+    color: #ffffff !important;
+}
+
+.btn-custom {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important; 
+    transition: background-color 0.3s ease, transform 0.3s ease !important;
+    padding: 0.5rem 0.5rem !important;
+    font-size: 1rem !important;
+    font-weight: 550 !important; 
+    border: 1px solid transparent !important;
+    border-radius: 0.5rem !important; 
+}
+
+.btn-custom-min {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important; 
+    transition: background-color 0.3s ease, transform 0.3s ease !important;
+    font-size: 0.8rem !important;
+    font-weight: 550 !important; 
+    border: 1px solid transparent !important;
+}
+
+.btn-custom-icon {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important; 
+    transition: background-color 0.3s ease, transform 0.3s ease !important;
+    font-size: 1rem !important;
+    font-weight: 550 !important; 
+    border: 1px solid transparent !important;
+    border-radius: 0.2rem !important; 
+}
+
+.custom-checkbox {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.custom-checkbox input[type="checkbox"] {
+    appearance: none; 
+    width: 16px;
+    height: 16px;
+    border: 2px solid #1b7492; 
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.custom-checkbox input[type="checkbox"]:checked {
+    background-color: #5eabc5;
+}
+
+.custom-checkbox input[type="checkbox"]:checked::before {
+    content: '✔';
+    display: block;
+    color: #ffffff !important;
+    font-size: 12px;
+    text-align: center;
+    line-height: 10px;
+}
+
+.custom-checkbox label {
+    margin-left: 8px;
+    color: #000000;
+    cursor: pointer;
+    font-size: 15px;
+    transition: color 0.3s ease;
+}
+
+.custom-checkbox label:hover {
+    color: #1b7492;
+}
+
+input.custom-file-input {
+    display: none;
+}
+
+.custom-file-upload {
+    display: inline-block;
+    padding: 8px 8px;
+    cursor: pointer;
+    border-radius: 0.5rem;
+    background-color: #2196bd;
+    color: white;
+    font-size: 14px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.custom-file-upload:hover {
+    background-color: #1b7492;
+}
+
+.custom-file-upload:hover,
+.btn-dark-blue:hover,
+.btn-custom-min:hover,
+.btn-custom-icon:hover, 
+.btn-custom:hover {
+    transform: translateY(-2px) !important;
+}
+
+/* Loadings */
+
+.loading{
+    font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    text-align: center;
+    position: absolute;
+    top: 36%;
+    width: 100%;
+}
+
+.preloader-row {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    height: 100%;
+}
+
+.preloader-form{
+    width: 50px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 8px solid #514b82;
+    animation:
+      l20-1 0.8s infinite linear alternate,
+      l20-2 1.6s infinite linear;
+}
+@keyframes l20-1{
+    0%    {clip-path: polygon(50% 50%,0       0,  50%   0%,  50%    0%, 50%    0%, 50%    0%, 50%    0% )}
+    12.5% {clip-path: polygon(50% 50%,0       0,  50%   0%,  100%   0%, 100%   0%, 100%   0%, 100%   0% )}
+    25%   {clip-path: polygon(50% 50%,0       0,  50%   0%,  100%   0%, 100% 100%, 100% 100%, 100% 100% )}
+    50%   {clip-path: polygon(50% 50%,0       0,  50%   0%,  100%   0%, 100% 100%, 50%  100%, 0%   100% )}
+    62.5% {clip-path: polygon(50% 50%,100%    0, 100%   0%,  100%   0%, 100% 100%, 50%  100%, 0%   100% )}
+    75%   {clip-path: polygon(50% 50%,100% 100%, 100% 100%,  100% 100%, 100% 100%, 50%  100%, 0%   100% )}
+    100%  {clip-path: polygon(50% 50%,50%  100%,  50% 100%,   50% 100%,  50% 100%, 50%  100%, 0%   100% )}
+}
+@keyframes l20-2{ 
+0%    {transform:scaleY(1)  rotate(0deg)}
+49.99%{transform:scaleY(1)  rotate(135deg)}
+50%   {transform:scaleY(-1) rotate(0deg)}
+100%  {transform:scaleY(-1) rotate(-135deg)}
+}
+
+/* Tooltips */
+
+.tooltip-inner {
+    background-color: #0A4564; 
+    color: #ffffff;          
+    font-size: 14px;          
+}
+
+.tooltip-arrow {
+    border-top-color: #0A4564; 
+}

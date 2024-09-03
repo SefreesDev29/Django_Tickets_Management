@@ -1,0 +1,71 @@
+{% extends 'body.html' %}
+{% load widget_tweaks %}
+{% block content %}
+    <form method="post" action=".">
+        <div class="card">
+            <div class="card-header navbar-dark-blue">
+                <h3 class="card-title fuente"> 
+                    <i class="fas fa-trash"></i>
+                    {{ title }}
+                </h3>
+            </div>
+            <div class="card-body">
+                <input type="hidden" name="action" value='{{ action }}'>
+                <div class="alert alert-danger alert-dismissible">
+                    <!-- <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button> -->
+                    <h5><i class="icon fas fa-ban"></i> Notificación</h5>
+                    {% block messagedelete %}
+                        Se va eliminar el registro N° "{{ object.id }}" de manera permanente.
+                    {% endblock %}
+                </div>
+            </div>
+            <div class="card-footer">
+                    <button type="submit" class="btn btn-primary btn-flat btn-custom">
+                        <i class="fas fa-save"></i> Sí, aceptar
+                    </button>
+                    <a href="{{ list_url }}" class="btn btn-danger btn-flat btn-custom">
+                        <i class="fas fa-times"></i> Cancelar
+                    </a>
+            </div>
+        </div>
+    </form>
+    {% if form.errors %}
+        <div id="error-messages-delete" style="display:none;">
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <span class="error-messages-delete">{{ error|escapejs }} Campo: {{ field.label|escapejs }}</span>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    {% endif %}
+    <script>
+        var errorMessages = '';
+        var errorMessagesDiv = $('#error-messages-delete');
+        if (errorMessagesDiv.length > 0) {
+            var errorMessages = '';
+            errorMessagesDiv.find('.error-messages-delete').each(function() {
+                errorMessages += $(this).text() + '\n';
+            });
+            if (errorMessages) {
+                alert_message({'title' : 'Error!', 'icon' : 'error', 'msg' : errorMessages, 'timer': 5000});
+            }
+        }
+
+        $('form').on('submit', function(e){
+            e.preventDefault();
+            var parameters = new FormData(this);
+            var btnsubmit = $(this).find('[type="submit"]').first();
+            btnsubmit.prop('disabled', true);
+            args = {
+                'type': 'red',
+                'url' : pathname,
+                'parameters' : parameters,
+                'btnsubmit' : btnsubmit,
+                'success' : function (response) {
+                    alert_message({'redirect': '{{ list_url }}'});
+                }
+            }
+            submit_with_ajax(args);
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'list.html' %}
+{% load static %}
+{% block head_list %}
+    <script src="{% static 'driver/js/list.js' %}"></script>
+{% endblock %}
+
+{% block columns %}
+    <tr>
+        <th scope="col" style="width: 7%;">Nro</th>
+        <th scope="col" style="width: 10%;">Nombres</th>
+        <th scope="col" style="width: 12%;">Apellidos</th>
+        <th scope="col" style="width: 8%;">Dni</th>
+        <th scope="col" style="width: 13%;">Fec. Nacimiento</th>
+        <th scope="col" style="width: 10%;">Sexo</th>
+        <th scope="col" style="width: 15%;">Fec. Creación</th>
+        <th scope="col" style="width: 15%;">Fec. Actualización</th>
+        <th scope="col" style="width: 10%;">Opciones</th>
+    </tr>
+{% endblock %}
+
+{% block javascript %}
+
+{% endblock %}

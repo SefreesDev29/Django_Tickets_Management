@@ -1,0 +1,68 @@
+{% extends 'login/base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{% block content %}
+<div class="login-box">
+    <div class="card fondo-image">
+        <a href="#" class="logo-fondo">
+            <img src="{{ dashboard.get_logo }}", width="50" height="50",
+                 class="brand-image img-circle">
+            {{ dashboard.name }}
+        </a>
+    </div>
+    <div class="card">
+        <div class="card-body login-card-body">
+            <p class="login-box-msg">{{ title }}</p>
+            <form action="." method="post">
+                <input type="hidden" name="next" value="{{ next }}">
+                {% csrf_token %}
+                <div class="input-group mb-3">
+                    {{ form.username|add_class:'form-control'|attr:'autocomplete:off'|attr:'placeholder:Ingrese su usuario'  }}
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-envelope"></span>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <button type="submit" class="btn btn-primary btn-block btn-dark-blue">
+                            <i class="fas fa-envelope"></i> Enviar
+                        </button>
+                    </div>
+                </div>
+                <p class="text-center mt-2" style="font-size: 13px;">
+                    Si deseas volver al login <i class="fa-solid fa-house"></i> da un click <a href="{% url 'login' %}">aquí.</a>
+                </p>
+            </form>
+        </div>
+    </div>
+    <script type="application/javascript">
+        $(function () {
+            $('form').on('submit', function (e) {
+                e.preventDefault();
+                var parameters = new FormData(this);
+                var btnsubmit = $(this).find('[type="submit"]').first();
+                btnsubmit.prop('disabled', true);
+                args = {
+                    'url' : pathname,
+                    'content' : '¿Estás seguro de resetear tu contraseña?',
+                    'parameters' : parameters,
+                    'btnsubmit' : btnsubmit,
+                    'success' : function (response) {
+                        alert_message({
+                            'title': 'Notificación!',
+                            'icon': 'info',
+                            'msg': 'Se ha enviado un correo electrónico con los pasos a seguir para que pueda resetear su contraseña.',
+                            'timer': 5000,
+                            'redirect': '{{ login_url }}'
+                        });
+                    }
+                }
+                submit_with_ajax(args);
+            });
+        });
+    </script>
+</div>
+{% endblock %}

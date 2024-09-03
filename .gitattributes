@@ -1,0 +1,8 @@
+*.py linguist-language=Python
+*.js linguist-language=JavaScript
+*.css linguist-language=CSS
+*.html linguist-language=HTML
+
+static/lib/** linguist-vendored
+Apps/login/templates/login/send_email.html -linguist-vendored
+Apps/user/templates/user/send_email.html -linguist-vendored

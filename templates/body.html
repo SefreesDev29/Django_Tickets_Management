@@ -1,0 +1,58 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block body %}
+    <body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+        <div id="global-preloader" class="preloader flex-column justify-content-center align-items-center">
+            <img class="animation__shake" src="{% static 'img/logoweb.png' %}" alt="logoApp" height="60" width="60">
+        </div>
+        <!-- Header -->
+        {% include 'header.html' %}
+        <!-- Sidebar -->
+        {% include 'sidebar.html' %}
+        <!-- Content -->
+        <div class="content-wrapper">
+            <div class="content-header">
+                <div class="container-fluid">
+                   
+                </div>
+            </div>
+            <div class="content">
+                <div class="container-fluid">
+                    {% block content %}
+
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+        <!-- Footer -->
+        {% include 'footer.html' %}
+    </div>
+
+    {% if messages %}
+        <div id="error-messages-body" style="display:none;">
+            {% for message in messages %}
+                <span class="error-messages-body">{{ message|escapejs}}</span>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Block javascript -->
+    {% block javascript %}
+
+    {% endblock %}
+    <script>
+        var errorMessages = '';
+        var errorMessagesDiv = $('#error-messages-body');
+        if (errorMessagesDiv.length > 0) {
+            var errorMessages = '';
+            errorMessagesDiv.find('.error-messages-body').each(function() {
+                errorMessages += $(this).text() + '\n';
+            });
+            if (errorMessages) {
+                alert_message({'title' : 'Error!', 'icon' : 'error', 'msg' : errorMessages, 'timer': 5000});
+            }
+        }
+    </script>
+    </body>
+{% endblock %}

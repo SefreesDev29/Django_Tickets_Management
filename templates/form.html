@@ -1,0 +1,73 @@
+{% extends 'body.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{% block head %}
+    
+
+    {% block head_form %}
+
+    {% endblock %}
+{% endblock %}
+{% block content %}
+    <form method="post" action="." enctype="multipart/form-data">
+        <div class="card">
+            <div class="card-header navbar-dark-blue">
+                <h3 class="card-title fuente"> 
+                    {% if action == 'add' %}
+                        <i class="fas fa-plus"></i>
+                        {{ title }}
+                    {% else %}
+                        <i class="fas fa-edit"></i>
+                        {{ title }}
+                    {% endif %}
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <input type="hidden" name="action" value="{{ action }}">
+
+                    {% for field in form.visible_fields %}
+                        <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                                <label for="email">{{ field.label }}:</label>
+                                {{ field|add_class:'form-control'|attr:'autocomplete:off' }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="card-footer">
+                <button type="submit" class="btn btn-primary btn-flat btn-custom">
+                    <i class="fas fa-save"></i> 
+                        {% if action == 'add' %}
+                            Agregar registro
+                        {% else %}
+                            Guardar registro
+                        {% endif %}
+                </button>
+                <a href="{{ list_url }}" class="btn btn-danger btn-flat btn-custom">
+                    <i class="fas fa-times"></i> Cancelar
+                </a>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+{% block javascript %}
+    <script>
+        $('form').on('submit', function(e){
+            e.preventDefault();
+            var parameters = new FormData(this);
+            var btnsubmit = $(this).find('[type="submit"]').first();
+            btnsubmit.prop('disabled', true);
+            args = {
+                'url' : pathname,
+                'parameters' : parameters,
+                'btnsubmit' : btnsubmit,
+                'success' : function (response) {
+                    alert_message({'redirect': '{{ list_url }}'});
+                }
+            }
+            submit_with_ajax(args);
+        });
+    </script>
+{% endblock %}

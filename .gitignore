@@ -1,0 +1,17 @@
+# Sistema operativo
+*.pyc
+*.sql
+__pycache__/
+venv/
+env/
+
+# Django 
+*.sqlite3
+staticfiles/
+media/
+**/migrations
+
+# Archivos de configuración
+.env 
+.vscode/
+Git_Docs.md

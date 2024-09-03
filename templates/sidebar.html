@@ -1,0 +1,156 @@
+{% load static %}
+<aside class="main-sidebar sidebar-dark-primary elevation-4 navbar-dark-black">
+    <a href="{% url 'core:dashboard' %}" class="brand-link">
+        <img src="{{ dashboard.get_logo }}"
+             class="brand-image img-circle"
+             style="opacity: .8">
+        <span class="brand-text font-weight-light">{{ dashboard.name }}</span>
+    </a>
+    <div class="sidebar">
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+                <img src="{{ request.user.get_image }}" class="img-circle elevation-2" alt="User Image">
+            </div>
+            <div class="info">
+                <a href="#" class="d-block">{{ request.user.get_full_name }}</a>
+            </div>
+        </div>
+        <div class="form-inline">
+          <div class="input-group" data-widget="sidebar-search">
+            <input class="form-control form-control-sidebar" type="search" placeholder="Buscar" aria-label="Search">
+            <div class="input-group-append">
+              <button class="btn btn-sidebar">
+                <i class="fas fa-search fa-fw"></i>
+              </button>
+            </div>
+          </div><div class="sidebar-search-results">
+            <div class="list-group">
+              <a href="#" class="list-group-item">
+                <div class="search-title">
+                  <strong class="text-light"></strong>E<strong class="text-light"></strong>l<strong class="text-light"></strong>e<strong class="text-light"></strong>m<strong class="text-light"></strong>e<strong class="text-light"></strong>n<strong class="text-light"></strong>t<strong class="text-light"></strong>o
+                  <strong class="text-light"></strong>n<strong class="text-light"></strong>o
+                  <strong class="text-light"></strong>e<strong class="text-light"></strong>n<strong class="text-light"></strong>c<strong class="text-light"></strong>o<strong class="text-light"></strong>n<strong class="text-light"></strong>t<strong class="text-light"></strong>r<strong class="text-light"></strong>a<strong class="text-light"></strong>d<strong class="text-light"></strong>o<strong class="text-light"></strong>!<strong class="text-light"></strong>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-header"> Módulos</li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link  nav-link--inside">
+                      <i class="nav-icon fa-solid fa-cart-shopping"></i>
+                      <p>
+                          Boletaje
+                        <i class="right fas fa-angle-left"></i>
+                      </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                      <li class="nav-item">
+                        <a href="{% url 'core:ticket_list' %}" class="nav-link nav-link--inside">
+                          <i class="fa-solid fa-tags nav-icon"></i>
+                          <p>Boletos</p>
+                        </a>
+                      </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                      <li class="nav-item">
+                        <a href="{% url 'core:driver_list' %}" class="nav-link nav-link--inside">
+                          <i class="fa-regular fa-id-card nav-icon"></i>
+                          <p>Choferes</p>
+                        </a>
+                      </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                          <a href="{% url 'core:purchase_list' %}" class="nav-link nav-link--inside">
+                            <i class="fas fa-file-invoice nav-icon"></i>
+                            <p>Compras</p>
+                          </a>
+                      </li>
+                    </ul>
+                  </li>
+                {% if request.session.group.name == 'Administrador'%}
+                  <li class="nav-item">
+                    <a href="#" class="nav-link nav-link--inside">
+                      <i class="nav-icon fas fa-lock"></i>
+                      <p>
+                          Seguridad
+                        <i class="right fas fa-angle-left"></i>
+                      </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                          <a href="{% url 'user:user_list' %}" class="nav-link nav-link--inside">
+                            <i class="fas fa-users-cog nav-icon"></i>
+                            <p>Usuarios</p>
+                          </a>
+                       </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                      <li class="nav-item">
+                        <a href="{% url 'security:accessuser_list' %}" class="nav-link nav-link--inside">
+                          <i class="fa-solid fa-user-secret nav-icon"></i>
+                          <p>Accesos</p>
+                        </a>
+                     </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                      <li class="nav-item">
+                        <a href="#" class="nav-link nav-link--inside">
+                          <i class="fa-solid fa-magnifying-glass nav-icon"></i>
+                          <p>
+                              Auditoría
+                            <i class="right fas fa-angle-left"></i>
+                          </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                          <li class="nav-item">
+                            <a href="{% url 'security:audit_driver_list' %}" class="nav-link nav-link--inside">
+                              <i class="fa-regular fa-id-card nav-icon"></i>
+                              <p>Choferes</p>
+                            </a>
+                         </li>
+                        </ul>
+                        <ul class="nav nav-treeview">
+                          <li class="nav-item">
+                            <a href="{% url 'security:audit_purchase_list' %}" class="nav-link nav-link--inside">
+                              <i class="fas fa-file-invoice nav-icon"></i>
+                              <p>Compras</p>
+                            </a>
+                         </li>
+                        </ul>
+                     </li>
+                    </ul>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link nav-link--inside">
+                      <i class="nav-icon fa-solid fa-gears"></i>
+                      <p>
+                          Configuración
+                        <i class="right fas fa-angle-left"></i>
+                      </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                          <a href="{% url 'security:config_dashboard' %}" class="nav-link nav-link--inside">
+                            <i class="fa-solid fa-screwdriver-wrench nav-icon"></i>
+                            <p>Dashboard</p>
+                          </a>
+                      </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                          <a href="/admin/" class="nav-link nav-link--inside">
+                            <i class="fa-solid fa-solar-panel nav-icon"></i>
+                            <p>Panel Administrador</p>
+                          </a>
+                      </li>
+                    </ul>
+                  </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</aside>

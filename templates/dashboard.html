@@ -1,0 +1,200 @@
+{% extends 'body.html' %}
+{% load static %}
+{% block head %}
+
+    <script src="{% static 'lib/highcharts-8.1.2/highcharts.js' %}"></script>
+    <script src="{% static 'lib/moment-2.30.1/moment.min.js' %}"></script>
+    
+{% endblock %}
+{% block content %}
+    <div class="card">
+        <div class="card-header navbar-dark-blue">
+            <h3 class="card-title fuente">
+                <i class="fas fa-chart-bar"></i>
+                Dashboard
+            </h3>
+        </div>
+        <div class="card-body">
+            <div id="dashboard-line" class="row" >
+            </div>
+            <div class="row" >
+                <div id="dashboard-bar" class="col-lg-6 col-12">
+                </div>
+                <div id="dashboard-circle" class="col-lg-6 col-12">
+                </div>
+            </div>
+            <div class="row" style="display: none;">
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3>{{ registro }}</h3>
+                            <p>Registros Creados<br />Hoy</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-file-invoice"></i>
+                        </div>
+                        <a href="{% url 'core:purchase_list' %}" class="small-box-footer">Más Información<i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-orange">
+                        <div class="inner">
+                            <h3>{{ users }}</h3>
+                            <p>Usuarios<br />Creados</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <a href="{% url 'user:user_list' %}" class="small-box-footer">Más Información<i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script type="application/javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+            var grade = '{{ dashboard.grade_graph_circular }}';
+            var mingrade = 0;
+            var maxgrade = 390;
+            if (grade == 90) {
+                mingrade = -90;
+                maxgrade = 90;
+            } else if (grade == 180) {
+                mingrade = 0;
+                maxgrade = 180;
+            }
+
+            function updateCharts(data) {
+                Highcharts.chart('dashboard-line', {
+                        chart: {
+                            type: 'line'
+                        },
+                        title: {
+                            text: 'Tendencia de Compras Mensuales en 2024'
+                        },
+                        xAxis: {
+                            // categories: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 
+                            //             'Agosto','Setiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                            categories: data.line_chart.months,
+                            title: {
+                                text: 'Mes'
+                            }
+                        },
+                        yAxis: {
+                            title: {
+                                text: 'N° de Compras'
+                            },
+                            tickInterval: '{{ dashboard.interv_graph_barline }}',
+                            min: 0
+                        },
+                        series: [{
+                            name: 'Compras',
+                            showInLegend: false,
+                            colorByPoint: true,
+                            data: data.line_chart.total_purchases
+                        }],
+                        credits:{
+                            enabled: false
+                        },
+                        plotOptions:{
+                            line:{
+                                dataLabels: {
+                                    enabled: true,
+                                    format: '{point.y}'
+                                },
+                                enableMouseTracking: true
+                            }
+                        }
+                    });
+                Highcharts.chart('dashboard-bar', {
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: 'Total de Compras por Año'
+                    },
+                    xAxis: {
+                        categories: data.bar_chart.years,
+                        title: {
+                            text: 'Año'
+                        }
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'N° de Compras'
+                        },
+                        tickInterval: '{{ dashboard.interv_graph_barline }}',
+                        min: 0
+                    },
+                    series: [{
+                        name: 'Compras',
+                        showInLegend: false,
+                        colorByPoint: true,
+                        data: data.bar_chart.total_purchases
+                    }],
+                    credits:{
+                        enabled: false
+                    }
+                });
+                Highcharts.chart('dashboard-circle', {
+                    chart: {
+                        type: 'pie'
+                    },
+                    title: {
+                        text: 'Distribución de compras por Chofer'
+                    },
+                    series: [{
+                        name: 'Compras',
+                        // data: ['Sebastian'].map((user, index) => ({
+                        //     name: user,
+                        //     y: [100, 40, 70, 150][index]
+                        // })),
+                        data: Object.entries(data.pie_chart.user_data).map(([chofer, total]) => ({ name: chofer, y: total }))
+                    }],
+                    credits:{
+                        enabled: false
+                    },
+                    plotOptions:{
+                        pie:{
+                            dataLabels: {
+                                enabled: true,
+                                format: '{point.name} : ({point.percentage:.1f}%)'
+                            },
+                            startAngle: mingrade,
+                            endAngle: maxgrade,
+                            center: ['50%', '50%']
+                        }
+                    }
+                });
+            }
+
+            $.ajax({
+                url: pathname,
+                type: 'POST',
+                data: {
+                    'action' : 'get_data_graph'
+                },
+                dataType: 'json',
+                headers: {
+                    'X-CSRFToken': csrftoken 
+                }
+            }).done(function (data) {
+                if (!data.hasOwnProperty('error')) {
+                   updateCharts(data);
+                   return
+                }
+                dict_error['msg'] = data.error;
+                alert_message(dict_error);
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                dict_error['msg'] = 'Error interno. ' + jqXHR.statusText + '.';
+                alert_message(dict_error);
+            }).always(function (data) {
+
+            });
+
+        });
+    </script>
+{% endblock %}

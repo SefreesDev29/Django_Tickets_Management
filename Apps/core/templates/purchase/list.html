@@ -1,0 +1,47 @@
+{% extends 'list.html' %}
+{% load static %}
+{% block head_list %}
+    <script src="{% static 'purchase/js/list.js' %}"></script>
+{% endblock %}
+
+{% block columns %}
+    <tr>
+        <th scope="col" style="width: 9%;">Nro</th>
+        <th scope="col" style="width: 25%;">Chofer</th>
+        <th scope="col" style="width: 15%;">Fec. Registro</th>
+        <th scope="col" style="width: 18%;">Fec. Creación</th>
+        <th scope="col" style="width: 18%;">Fec. Actualización</th>
+        <th scope="col" style="width: 15%;">Opciones</th>
+    </tr>
+{% endblock %}
+
+{% block javascript %}
+    <div class="modal fade" id="ModalPurchaseDet" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"><b><i class="fas fa-file-invoice"></i> Consulta de
+                        detalle de boletos</b></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered" id="tblDet">
+                        <thead>
+                        <tr>
+                            <th>Tipo de Boleto</th>
+                            <th>Cantidad</th>
+                            <th>Serie-Inicial</th>
+                            <th>Serie-Final</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

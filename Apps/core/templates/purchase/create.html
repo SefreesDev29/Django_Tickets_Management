@@ -1,0 +1,172 @@
+{% extends 'list.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block head_list %}
+    <link href="{% static 'lib/select2-4.1.0/css/select2.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'lib/select2-4.1.0/css/select2-bootstrap4.min.css' %}" rel="stylesheet"/>
+    <script src="{% static 'lib/select2-4.1.0/js/select2.min.js' %}"></script>
+    <script src="{% static 'lib/select2-4.1.0/js/i18n/es.js' %}"></script>
+
+    <link href="{% static 'lib/bootstrap-touchspin-4.3.0/jquery.bootstrap-touchspin.css' %}" rel="stylesheet"/>
+    <script src="{% static 'lib/bootstrap-touchspin-4.3.0/jquery.bootstrap-touchspin.js' %}"></script>
+
+    <script src="{% static 'purchase/js/form.js' %}"></script>
+{% endblock %}
+
+{% block content %} 
+    
+    <form id="frmPurchase" enctype="multipart/form-data" method="post">
+        <div class="card">
+            <div class="card-header navbar-dark-blue">
+                <h3 class="card-title fuente">
+                    {% if action == 'add' %}
+                        <i class="fas fa-plus"></i>
+                    {% else %}
+                        <i class="fas fa-edit"></i>
+                    {% endif %}
+                    {{ title }}
+                </h3>
+            </div>
+            <div id="loading-indicator">
+                <div class="card-body">
+                    <div class="row preloader-row">
+                        <div class="preloader-form"></div>
+                    </div>
+                </div>
+                <div class="card-footer"></div>
+            </div>
+            <div id="main-form">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="card card-secondary">
+                                <div class="card-header">
+                                    <h3 class="card-title"><i class="fas fa-boxes"></i> Detalle de boletos</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label>Buscador de boletos:</label>
+                                        <div class="input-group">
+                                            <select class="form-control select2" name="search"></select>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <button type="button" class="btn btn-danger btn-xs btn-flat btn-custom btnRemoveAll">
+                                        <i class="fas fa-trash"></i> Eliminar todos mis registros
+                                    </button>
+                                    <hr>
+                                    <table class="table table-bordered" id="tblProducts">
+                                        <thead>
+                                        <tr>
+                                            <th>Eliminar</th>
+                                            <th>Boleto</th>
+                                            <th>Cantidad</th>
+                                            <th>Serie Inicial</th>
+                                            <th>Serie Final</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="card card-secondary">
+                                <div class="card-header">
+                                    <h3 class="card-title"><i class="fas fa-file-invoice"></i> Datos de la Compra</h3>
+                                </div>
+                                <div class="card-body">
+                                    <input type="hidden" name="action" value="{{ action }}">
+                                    <div class="form-group">
+                                        <label>Fecha de compra:</label>
+                                        {{ form.date_joined }}
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Chofer:</label>
+                                        <div class="input-group">
+                                            {{ form.driv }}
+                                            <div class="input-group-append">
+                                                <button class="btn btn-success btn-flat btnAddDriver" type="button">
+                                                    <i class="fas fa-user-plus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group custom-file-div">
+                                        <label>Documento:</label>
+                                        <label for="id_file" class="custom-file-upload">
+                                            <i class="fa-solid fa-paperclip"></i>
+                                            Subir archivo
+                                        </label>
+                                        <!-- {{ form.file|add_class:'custom-file-input' }} -->
+                                        <input type="file" name="{{ form.file.name }}" class="custom-file-input" id="id_file">
+                                        <span id="file-path"></span>
+                                        {% if form.file.value %}
+                                            <div>
+                                                Actualmente: 
+                                                <a href="{{ form.file.value.url }}" target="_blank">{{ form.file.value.name }}</a>
+                                            </div>
+                                            <div class="custom-checkbox">
+                                                <input type="checkbox" name="file-clear" id="file-clear_id">
+                                                <label for="file-clear_id">Limpiar</label>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary btn-flat btn-custom">
+                        <i class="fas fa-save"></i> 
+                        {% if action == 'add' %}
+                            Agregar registro
+                        {% else %}
+                            Guardar registro
+                        {% endif %}
+                    </button>
+                    <a href="{{ list_url }}" class="btn btn-danger btn-flat btn-custom">
+                        <i class="fas fa-times"></i> Cancelar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- Modal Driver -->
+    <div class="modal fade" id="myModalDriver" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <form id="frmDriver" enctype="multipart/form-data" method="post">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">
+                            <b><i class="fas fa-user-plus"></i> Nuevo registro de un chofer</b>
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {% for field in frmDriver.visible_fields %}
+                            <div class="form-group">
+                                <label for="email">{{ field.label }}:</label>
+                                {{ field|add_class:'form-control'|attr:'autocomplete:off' }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary btn-block btn-flat btn-custom">
+                            <i class="fas fa-save"></i> Guardar Chofer
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>   
+    <!-- <script>
+        purchases.items.products = {{ det|safe }};
+    </script> -->
+{% endblock %}
