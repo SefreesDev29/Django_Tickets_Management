@@ -171,29 +171,29 @@
                 });
             }
 
-            $.ajax({
-                url: pathname,
-                type: 'POST',
-                data: {
-                    'action' : 'get_data_graph'
-                },
-                dataType: 'json',
-                headers: {
-                    'X-CSRFToken': csrftoken 
-                }
-            }).done(function (data) {
-                if (!data.hasOwnProperty('error')) {
-                   updateCharts(data);
-                   return
-                }
-                dict_error['msg'] = data.error;
-                alert_message(dict_error);
-            }).fail(function (jqXHR, textStatus, errorThrown) {
-                dict_error['msg'] = 'Error interno. ' + jqXHR.statusText + '.';
-                alert_message(dict_error);
-            }).always(function (data) {
+            const socket = new WebSocket('ws://' + host + '/ws/dashboard/');
 
-            });
+            socket.onopen = function(e) {
+                console.log('WebSocket conexión establecida.');
+                var parameter = JSON.stringify({ 'action': 'get_data_graph' });
+                socket.send(parameter );
+                setInterval(function() {
+                    socket.send(parameter);
+                }, 10000); 
+            };
+
+            socket.onmessage = function(e) {
+                const data = JSON.parse(e.data);
+                updateCharts(data);
+            };
+
+            socket.onerror = function(e) {
+                console.error('WebSocket error:', e);
+            };
+
+            socket.onclose = function(e) {
+                console.log('WebSocket conexión cerrada.');
+            };
 
         });
     </script>
