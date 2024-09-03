@@ -48,6 +48,7 @@ THIRD_PARTY_APPS = [
     'widget_tweaks',
     'django_cleanup.apps.CleanupConfig',
     'django_user_agents',
+    'channels',
     'simple_history',
 ]
 
@@ -87,7 +88,14 @@ TEMPLATES = [
     },
 ]
 
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
+    },
+}
+
 WSGI_APPLICATION = 'Config.wsgi.application'
+ASGI_APPLICATION = 'Config.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases

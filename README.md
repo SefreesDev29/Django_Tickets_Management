@@ -13,6 +13,7 @@ El aplicativo cuenta con:
 - **Gestión de usuarios** para actualizar datos y roles
 - **Auditoría por modelos** para rastrear acciones (creación, actualización y eliminación)
 - **Configuración de sistema** para modificar el título del aplicativo, autor, logo, fondo y dashboard
+- **Manejo de WebSockets** para actualización asíncrona
 
 Basado en una plantilla de Bootstrap 4, con el uso de JQuery y Ajax, entre otros plugins.
 
@@ -86,6 +87,7 @@ GRANT ALL PRIVILEGES ON SCHEMA public TO nombre_usuario;
 - Crear una carpeta `media` en la raíz del proyecto, al mismo nivel de la carpeta `static`
 - Ejecuta las migraciones:
   ```sh
+  python manage.py collectstatic
   python manage.py makemigrations
   python manage.py makemigrations <nameapp> # Especificar el nombre del app solo si no se crea la carpeta migrations
   python manage.py migrate auth
@@ -96,12 +98,16 @@ GRANT ALL PRIVILEGES ON SCHEMA public TO nombre_usuario;
   ```sh
   python manage.py createsuperuser
   ```
+- Configurar variable de entorno:
+  ```sh
+  $env:DJANGO_SETTINGS_MODULE="Config.settings"
+  ```
 
 ### 🚀 Ejecutar el proyecto
 
 - Ejecuta el servidor:
   ```sh
-  python manage.py runserver 0.0.0.0:8000 # Especificar el puerto solo si quieres usar uno diferente al 8000
+  uvicorn Config.asgi:application --host 0.0.0.0 --port 8000 # Especificar el puerto solo si quieres usar uno diferente al 8000
   ```
 
 ## Enlaces de Referencia
